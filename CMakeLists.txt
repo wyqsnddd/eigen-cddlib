@@ -30,11 +30,22 @@ set(CMAKE_CXX_STANDARD 11)
 option(BUILD_TESTING "Build unit tests." ON)
 option(BUILD_TEST_STATIC_BOOST "Build unit tests with static boost libraries" OFF)
 
+
+# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 setup_project()
 
 set(Eigen_REQUIRED "eigen3 >= 3.2")
 add_project_dependency(Eigen3 REQUIRED)
-add_project_dependency(cdd REQUIRED)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/find-external/CDD/)
+#message(CMAKE_MODULE_PATH)
+#message(${CMAKE_MODULE_PATH})
+
+
+
+find_package(CDD REQUIRED)
+# add_project_dependency(cdd REQUIRED)
 
 add_subdirectory(src)
 

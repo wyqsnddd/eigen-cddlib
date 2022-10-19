@@ -104,12 +104,14 @@ BOOST_FIXTURE_TEST_CASE(Vrep2Hrep, Rep)
     bool success = poly.setVrep(AVrepCone, bVrepCone);
     auto hrep = poly.hrep();
     BOOST_CHECK(success);
+    BOOST_CHECK(-1);
     BOOST_CHECK(poly.lastErrorMessage() == DD_NO_ERROR_STRING);
     BOOST_CHECK(AHrepCone.isApprox(hrep.first));
     BOOST_CHECK(bHrepCone.isApprox(hrep.second));
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Wall time: " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << "ms" << std::endl;
 
+    BOOST_TEST_MESSAGE( "Vrep2Hrep" ); 
     poly.printHrep();
 }
 
@@ -126,6 +128,7 @@ BOOST_FIXTURE_TEST_CASE(Hrep2Vrep, Rep)
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Wall time: " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << "ms" << std::endl;
 
+    BOOST_TEST_MESSAGE( "Hrep2Vrep" ); 
     poly.printVrep();
 }
 
@@ -142,6 +145,7 @@ BOOST_FIXTURE_TEST_CASE(setRays, Rep)
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Wall time: " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << "ms" << std::endl;
 
+    BOOST_TEST_MESSAGE( "setRays" ); 
     poly.printHrep();
 }
 
@@ -158,6 +162,7 @@ BOOST_FIXTURE_TEST_CASE(setVertices, Rep)
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Wall time: " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << "ms" << std::endl;
 
+    BOOST_TEST_MESSAGE( "setVerticies" ); 
     poly.printHrep();
 }
 
@@ -173,8 +178,33 @@ BOOST_FIXTURE_TEST_CASE(setVertices2D, Rep)
     BOOST_CHECK(bHrepVertices2D.isApprox(hrep.second, 1e-5));
     auto t_end = std::chrono::high_resolution_clock::now();
     std::cout << "Wall time: " << std::chrono::duration<double, std::milli>(t_end - t_start).count() << "ms" << std::endl;
-
     std::cout << (AHrepVertices2D - hrep.first).norm() << std::endl;
     std::cout << (bHrepVertices2D - hrep.second).norm() << std::endl;
-    poly.printHrep();
+
+
+    std::cout << "This is the second round computation" <<std::endl;
+
+    auto t_start_2 = std::chrono::high_resolution_clock::now();
+    // Eigen::Polyhedron poly_2;
+    bool success_2 = poly.setVertices(vertices2D);
+    auto hrep_2 = poly.hrep();
+    BOOST_CHECK(success_2);
+    BOOST_CHECK(poly.lastErrorMessage() == DD_NO_ERROR_STRING);
+    BOOST_CHECK(AHrepVertices2D.isApprox(hrep.first, 1e-5));
+    BOOST_CHECK(bHrepVertices2D.isApprox(hrep.second, 1e-5));
+    auto t_end_2 = std::chrono::high_resolution_clock::now();
+    std::cout << "Wall time: " << std::chrono::duration<double, std::milli>(t_end_2 - t_start_2).count() << "ms" << std::endl;
+    std::cout << (AHrepVertices2D - hrep.first).norm() << std::endl;
+    std::cout << (bHrepVertices2D - hrep.second).norm() << std::endl;
+
+
+
+    // BOOST_TEST_MESSAGE( "setVerticies2D" ); 
+    // poly.printHrep();
+
+    // poly.setHrep(AHrepCone, bHrepCone);
+    // poly.printVrep();
+    // std::cout<<poly.vrep().first;
 }
+
+
