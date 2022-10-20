@@ -20,66 +20,66 @@
 namespace Eigen {
 
 // std::atomic_int Polyhedron::counter(0);
-// std::mutex Polyhedron::mtx;
+std::mutex Polyhedron::mtx;
 
 Polyhedron::Polyhedron()
     : matPtr_(nullptr)
     , polytope_(nullptr)
 {
-    // if (counter == 0)
-    //     dd_set_global_constants();
-    // counter++;
+     // if (counter == 0)
+       dd_set_global_constants();
+     // counter++;
 }
 
 Polyhedron::~Polyhedron()
 {
     // counter--;
 
-    if (matPtr_ != nullptr)
-        dd_FreeMatrix(matPtr_);
-    if (polytope_ != nullptr)
-        dd_FreePolyhedra(polytope_);
+    // if (matPtr_ != nullptr)
+    //   dd_FreeMatrix(matPtr_);
+    // if (polytope_ != nullptr)
+    //   dd_FreePolyhedra(polytope_);
 
     // if (counter == 0)
-    //     dd_free_global_constants();
+    //   dd_free_global_constants();
 }
 
 bool Polyhedron::setHrep(const Eigen::MatrixXd& A, const Eigen::VectorXd& b)
 {
-    // std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     return hvrep(A, b, false);
 }
 
 bool Polyhedron::setVrep(const Eigen::MatrixXd& A, const Eigen::VectorXd& b)
 {
-    // std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     return hvrep(A, b, true);
 }
 
 std::pair<Eigen::MatrixXd, Eigen::VectorXd> Polyhedron::vrep() const
 {
-    // std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     dd_MatrixPtr mat = dd_CopyGenerators(polytope_);
     return ddfMatrix2EigenMatrix(mat, true);
 }
 
 std::pair<Eigen::MatrixXd, Eigen::VectorXd> Polyhedron::hrep() const
 {
-    // std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     dd_MatrixPtr mat = dd_CopyInequalities(polytope_);
     return ddfMatrix2EigenMatrix(mat, false);
 }
 
 void Polyhedron::printVrep() const
 {
-    // std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     dd_MatrixPtr mat = dd_CopyGenerators(polytope_);
     dd_WriteMatrix(stdout, mat);
 }
 
 void Polyhedron::printHrep() const
 {
-    // std::lock_guard<std::mutex> lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     dd_MatrixPtr mat = dd_CopyInequalities(polytope_);
     dd_WriteMatrix(stdout, mat);
 }
@@ -106,8 +106,8 @@ bool Polyhedron::hvrep(const Eigen::MatrixXd& A, const Eigen::VectorXd& b, bool 
 
 void Polyhedron::initializeMatrixPtr(Eigen::Index rows, Eigen::Index cols, bool isFromGenerators)
 {
-    if (matPtr_ != nullptr)
-        dd_FreeMatrix(matPtr_);
+    //if (matPtr_ != nullptr)
+    //    dd_FreeMatrix(matPtr_);
 
     matPtr_ = dd_CreateMatrix(static_cast<dd_rowrange>(rows), static_cast<dd_colrange>(cols));
     matPtr_->representation = (isFromGenerators ? dd_Generator : dd_Inequality);
@@ -150,7 +150,7 @@ std::pair<Eigen::MatrixXd, Eigen::VectorXd> Polyhedron::ddfMatrix2EigenMatrix(co
             mOut(row, col - 1) = sign * mat->matrix[row][col][0];
     }
 
-    dd_FreeMatrix(mat);
+    // dd_FreeMatrix(mat);
     return std::make_pair(mOut, vOut);
 }
 

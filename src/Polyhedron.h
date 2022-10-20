@@ -22,7 +22,7 @@
 #include <atomic>
 #include <cdd/setoper.h> // Must be included before cdd.h (wtf)
 #include <cdd/cdd.h>
-// #include <mutex>
+#include <mutex>
 #include <utility>
 
 namespace Eigen {
@@ -103,8 +103,8 @@ private:
     dd_ErrorType err_;
 
 private:
-    //static std::atomic_int counter;
-    //static std::mutex mtx;
+    static std::atomic_int counter;
+    static std::mutex mtx;
 };
 
 } // namespace Eigen
