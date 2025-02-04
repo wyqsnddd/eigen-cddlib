@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.1.3)
+cmake_minimum_required(VERSION 3.11)
 
 include(cmake/base.cmake)
 
@@ -26,8 +26,10 @@ set(PROJECT_DEBUG_POSTFIX "_d")
 set(INSTALL_GENERATED_HEADERS OFF CACHE BOOL "Generate and install standard headers")
 
 
+set(PROJECT_USE_CMAKE_EXPORT TRUE)
 project(${PROJECT_NAME} LANGUAGES CXX VERSION ${PROJECT_VERSION})
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(DOXYGEN_USE_MATHJAX "YES")
 set(CMAKE_CXX_STANDARD 11)
 
