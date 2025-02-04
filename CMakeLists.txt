@@ -16,22 +16,25 @@
 
 cmake_minimum_required(VERSION 3.11)
 
-include(cmake/base.cmake)
 
 
 set(PROJECT_NAME eigen-cdd)
 set(PROJECT_DESCRIPTION "Eigen C++ wrapper for using cddlib")
+set(PROJECT_VERSION 0.1.0)
 set(PROJECT_URL "https://github.com/vsamy/eigen-cddlib")
 set(PROJECT_DEBUG_POSTFIX "_d")
-set(INSTALL_GENERATED_HEADERS OFF CACHE BOOL "Generate and install standard headers")
-
-
-set(PROJECT_USE_CMAKE_EXPORT TRUE)
-project(${PROJECT_NAME} LANGUAGES CXX VERSION ${PROJECT_VERSION})
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# set(INSTALL_GENERATED_HEADERS OFF CACHE BOOL "Generate and install standard headers")
 set(DOXYGEN_USE_MATHJAX "YES")
 set(CMAKE_CXX_STANDARD 11)
+set(PROJECT_USE_CMAKE_EXPORT TRUE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+include(cmake/base.cmake)
+
+project(${PROJECT_NAME} LANGUAGES CXX VERSION ${PROJECT_VERSION})
+
+
+
 
 option(BUILD_TESTING "Build unit tests." ON)
 option(BUILD_TEST_STATIC_BOOST "Build unit tests with static boost libraries" OFF)
@@ -51,7 +54,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/find-exte
 
 
 find_package(CDD REQUIRED)
-# add_project_dependency(cdd REQUIRED)
+#add_project_dependency(cdd REQUIRED)
 
 add_subdirectory(src)
 
