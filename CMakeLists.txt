@@ -18,11 +18,15 @@ cmake_minimum_required(VERSION 3.1.3)
 
 include(cmake/base.cmake)
 
+
 set(PROJECT_NAME eigen-cdd)
 set(PROJECT_DESCRIPTION "Eigen C++ wrapper for using cddlib")
 set(PROJECT_URL "https://github.com/vsamy/eigen-cddlib")
 set(PROJECT_DEBUG_POSTFIX "_d")
 set(INSTALL_GENERATED_HEADERS OFF CACHE BOOL "Generate and install standard headers")
+
+
+project(${PROJECT_NAME} LANGUAGES CXX VERSION ${PROJECT_VERSION})
 
 set(DOXYGEN_USE_MATHJAX "YES")
 set(CMAKE_CXX_STANDARD 11)
@@ -32,10 +36,10 @@ option(BUILD_TEST_STATIC_BOOST "Build unit tests with static boost libraries" OF
 
 
 # set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
-setup_project()
 
 set(Eigen_REQUIRED "eigen3 >= 3.2")
-add_project_dependency(Eigen3 REQUIRED)
+
+find_package(Eigen3 REQUIRED)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR})
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/find-external/CDD/)
@@ -52,6 +56,3 @@ add_subdirectory(src)
 if(${BUILD_TESTING})
     add_subdirectory(tests)
 endif()
-
-setup_project_finalize()
-setup_project_package_finalize()
